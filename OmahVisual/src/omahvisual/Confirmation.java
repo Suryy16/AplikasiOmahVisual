@@ -12,6 +12,16 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class Confirmation extends javax.swing.JFrame {
 
@@ -84,6 +94,8 @@ public class Confirmation extends javax.swing.JFrame {
 
         // Set the total amount
         jLabelTotal.setText("Total: " + formatCurrency(total));
+        double dpTotal = 0.3 * total;
+        jLabelDP.setText("DP : " + formatCurrency(total * 0.3));
     }
 
 // Add a method to format currency
@@ -105,6 +117,7 @@ public class Confirmation extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jPanel1 = new javax.swing.JPanel();
         submit = new javax.swing.JButton();
         jLabelNama = new javax.swing.JLabel();
         jLabelBarang = new javax.swing.JLabel();
@@ -119,13 +132,26 @@ public class Confirmation extends javax.swing.JFrame {
         dp = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         namaPegawai = new javax.swing.JComboBox<>();
+        jLabelDP = new javax.swing.JLabel();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        submit.setBackground(new java.awt.Color(0, 153, 0));
         submit.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         submit.setText("Submit");
         submit.addActionListener(new java.awt.event.ActionListener() {
@@ -200,6 +226,10 @@ public class Confirmation extends javax.swing.JFrame {
         namaPegawai.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         namaPegawai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ALDINO", "VINO", "RYAN" }));
 
+        jLabelDP.setFont(new java.awt.Font("Poppins", 1, 24)); // NOI18N
+        jLabelDP.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelDP.setText("jLabel3");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -207,8 +237,29 @@ public class Confirmation extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(sukses)
+                                .addGap(305, 305, 305))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel2))
+                                        .addGap(35, 35, 35)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(dp)
+                                            .addComponent(namaPegawai, 0, 149, Short.MAX_VALUE))))
+                                .addGap(242, 242, 242))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(jLabelDP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jLabelNama, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE)
                             .addComponent(jLabelBarang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabelHarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -217,26 +268,7 @@ public class Confirmation extends javax.swing.JFrame {
                             .addComponent(jLabelTanggalPengambilan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabelTanggalPengembalian, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabelTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(sukses)
-                                .addGap(281, 281, 281))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(345, 345, 345))))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(35, 35, 35)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(dp)
-                    .addComponent(namaPegawai, 0, 149, Short.MAX_VALUE))
-                .addGap(242, 242, 242))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -257,7 +289,9 @@ public class Confirmation extends javax.swing.JFrame {
                 .addComponent(jLabelTanggalPengembalian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelDP)
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(dp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -265,9 +299,9 @@ public class Confirmation extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(namaPegawai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                .addComponent(submit)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(sukses)
                 .addContainerGap())
         );
@@ -286,9 +320,9 @@ public class Confirmation extends javax.swing.JFrame {
         double paketHarga = (total + diskon) / durasiSewa; // Adjust the formula if needed
         double alatHarga = (total + diskon) / durasiSewa; // Adjust the formula if needed
 
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=Transaksi_Omah_Visual;user=Project-OmahVisual;password=OmahVisual2023;integratedSecurity=true;" + "encrypt=true;trustServerCertificate=true";
-        String user = "Project-OmahVisual";
-        String dbPassword = "OmahVisual2023";
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=Transaksi_Omah_Visual2;user=sa;password=12345678;integratedSecurity=true;" + "encrypt=true;trustServerCertificate=true";
+        String user = "sa";
+        String dbPassword = "12345678";
         // Get database connection
         try (Connection connection = DriverManager.getConnection(url, user, dbPassword)) {
 
@@ -423,12 +457,34 @@ public class Confirmation extends javax.swing.JFrame {
             LandingPage field = new LandingPage();
             field.setVisible(true);
 
+        
         } catch (SQLException e) {
             e.printStackTrace();
             // Handle exceptions accordingly
         }
+        
+        //Invoice//
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            try (Connection con = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=Transaksi_Omah_Visual2;integratedSecurity=true;user=sa;password=12345678"+"encrypt=true;trustServerCertificate=true")) {
+                String reportPath = "C:\\Users\\naray\\Downloads\\Invoice\\Note_Omah_Visual5.jasper";
+                JasperReport jr = JasperCompileManager.compileReport(reportPath);
+                JasperPrint jp = JasperFillManager.fillReport(jr, null, con);
+                JasperViewer.viewReport(jp);
+            }
+        }
+        catch(ClassNotFoundException | SQLException | JRException e){
+            JOptionPane.showMessageDialog(null,e);
+        }
+            
+  
 
+        
+        
         sukses.setVisible(true);
+        setVisible(false);
+        LandingPage field = new LandingPage();
+        field.setVisible(true);
     }//GEN-LAST:event_submitActionPerformed
 
     private void dpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dpActionPerformed
@@ -451,9 +507,9 @@ public class Confirmation extends javax.swing.JFrame {
     private String getLastInvoiceNumberFromDatabase() {
         String lastInvoiceNumber = "";
 
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=Transaksi_Omah_Visual;user=Project-OmahVisual;password=OmahVisual2023;integratedSecurity=true;" + "encrypt=true;trustServerCertificate=true";
-        String user = "Project-OmahVisual";
-        String dbPassword = "OmahVisual2023";
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=Transaksi_Omah_Visual2;user=sa;password=12345678;integratedSecurity=true;" + "encrypt=true;trustServerCertificate=true";
+        String user = "sa";
+        String dbPassword = "12345678";
         try (Connection connection = DriverManager.getConnection(url, user, dbPassword)) {
             String query = "SELECT MAX(No_Invoice) AS LastInvoiceNumber FROM Tabel_Utama";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -510,6 +566,7 @@ public class Confirmation extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelBarang;
+    private javax.swing.JLabel jLabelDP;
     private javax.swing.JLabel jLabelDiskon;
     private javax.swing.JLabel jLabelDurasi;
     private javax.swing.JLabel jLabelHarga;
@@ -517,6 +574,7 @@ public class Confirmation extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelTanggalPengambilan;
     private javax.swing.JLabel jLabelTanggalPengembalian;
     private javax.swing.JLabel jLabelTotal;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JComboBox<String> namaPegawai;
