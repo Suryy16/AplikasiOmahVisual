@@ -24,9 +24,9 @@ public class Transaksi extends javax.swing.JFrame {
     }
 
     private double getHargaBarang(String namaBarang) {
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=Transaksi_Omah_Visual;user=Project-OmahVisual;password=OmahVisual2023;integratedSecurity=true;" + "encrypt=true;trustServerCertificate=true";
-        String user = "Project-OmahVisual";
-        String dbPassword = "OmahVisual2023";
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=Transaksi_Omah_Visual2;user=sa;password=admin123;integratedSecurity=true;" + "encrypt=true;trustServerCertificate=true";
+        String user = "sa";
+        String dbPassword = "admin123";
 
         try (Connection connection = DriverManager.getConnection(url, user, dbPassword)) {
             String query;
@@ -70,9 +70,9 @@ public class Transaksi extends javax.swing.JFrame {
     }
 
     private void loadTableData() {
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=Transaksi_Omah_Visual;user=Project-OmahVisual;password=OmahVisual2023;integratedSecurity=true;" + "encrypt=true;trustServerCertificate=true";
-        String user = "Project-OmahVisual";
-        String dbPassword = "OmahVisual2023";
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=Transaksi_Omah_Visual2;user=sa;password=admin123;integratedSecurity=true;" + "encrypt=true;trustServerCertificate=true";
+        String user = "sa";
+        String dbPassword = "admin123";
         try (Connection connection = DriverManager.getConnection(url, user, dbPassword)) {
             String query = "SELECT * FROM Katalog";
             try (PreparedStatement pst = connection.prepareStatement(query); ResultSet rs = pst.executeQuery()) {
@@ -126,6 +126,7 @@ public class Transaksi extends javax.swing.JFrame {
         namaPengguna = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         diskon = new javax.swing.JTextField();
+        back = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -154,7 +155,9 @@ public class Transaksi extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         jLabel1.setText("Pilih Barang");
 
+        pilihBarang.setBackground(new java.awt.Color(0, 51, 102));
         pilihBarang.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        pilihBarang.setForeground(new java.awt.Color(0, 0, 0));
         pilihBarang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PAKET LIVECAM 1", "PAKET CINEMATIC 1", "PAKET CINEMATIC 3", "PAKET LIVECAM 2", "PAKET CINEMATIC 9", "CANON 6D", "CANON 600D", "CANON 1200D+18-55mmMEMORY", "SONY a7 Mark iii KIT", "SONY a6 400", "IPHONE XR", "IPHONE 11", "CANON FIX 50MM F1.8", "SIGMA 16MM F1.4 FOR SONY", "CANON 600D+18-55MM", "CANON 650D", "DJI MAVIC 2 ZOOM", "DJI MAVIC AIR 2", "FUJIFILM XT 30ii BO", "SIGMA FUJI 16mm f1.4 DG for FUJI", "SIGMA 30mm F1.4", "DJI RONIN SC 2", "IPHONE 14 PRO", "JIMMY JIB + INSTALASI + PENGIRIMAN", "CANON FIX 50MM F1.8", "SONY HXR NX--100 SDI", "IPHONE 14 PRO", "AIRPODS 3RD GENERATION", "CANON 60D + 24-105mm", "GoPro Hero9", "GoPro Hero8", "SARAMONIC BLINK 500 B2 WIRELES MIC", "CANON EOS M100", "SONY a7 Mark ii KIT." }));
         pilihBarang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -162,6 +165,7 @@ public class Transaksi extends javax.swing.JFrame {
             }
         });
 
+        confirm.setBackground(new java.awt.Color(0, 153, 51));
         confirm.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         confirm.setText("Confirm");
         confirm.addActionListener(new java.awt.event.ActionListener() {
@@ -193,6 +197,14 @@ public class Transaksi extends javax.swing.JFrame {
 
         diskon.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
 
+        back.setBackground(new java.awt.Color(255, 0, 0));
+        back.setText("Back");
+        back.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -221,6 +233,8 @@ public class Transaksi extends javax.swing.JFrame {
                                 .addComponent(diskon, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(confirm, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(214, 214, 214))
                     .addComponent(jScrollPane1))
@@ -251,7 +265,9 @@ public class Transaksi extends javax.swing.JFrame {
                             .addComponent(diskon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6))
                         .addGap(18, 18, 18)
-                        .addComponent(confirm, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(confirm, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+                            .addComponent(back, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(31, 31, 31))
         );
 
@@ -297,6 +313,13 @@ public class Transaksi extends javax.swing.JFrame {
 
     }//GEN-LAST:event_namaPenggunaActionPerformed
 
+    private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+        LandingPage field = new LandingPage();
+        field.setVisible(true);
+    }//GEN-LAST:event_backActionPerformed
+
     public static void main(String args[]) {
 
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -329,6 +352,7 @@ public class Transaksi extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton back;
     private javax.swing.JButton confirm;
     private javax.swing.JTextField diskon;
     private javax.swing.JTextField durasiSewa;
