@@ -120,13 +120,13 @@ public class History extends javax.swing.JFrame {
 
     private void populateTable() {
         // Database connection parameters
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=Transaksi_Omah_Visual;user=Project-OmahVisual;password=OmahVisual2023;integratedSecurity=true;" + "encrypt=true;trustServerCertificate=true";
-        String user = "Project-OmahVisual";
-        String dbPassword = "OmahVisual2023";
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=Transaksi_Omah_Visual2;user=sa;password=admin123;integratedSecurity=true;" + "encrypt=true;trustServerCertificate=true";
+        String user = "sa";
+        String dbPassword = "admin123";
 
         try (Connection connection = DriverManager.getConnection(url, user, dbPassword)) {
             // Define the SQL query with JOIN operations and DISTINCT
-            String query = "SELECT DISTINCT "
+            String query = "SELECT "
                     + "Tabel_Utama.No_Invoice, "
                     + "Tabel_Utama.Nama_Pelanggan, "
                     + "Tabel_Utama.Tanggal_Sewa, "
@@ -141,7 +141,8 @@ public class History extends javax.swing.JFrame {
                     + "Tabel_Utama.Nama_Pegawai "
                     + "FROM Tabel_Utama "
                     + "JOIN Tabel_Paket ON Tabel_Utama.No_Invoice = Tabel_Paket.No_Invoice "
-                    + "JOIN Tabel_Alat ON Tabel_Utama.No_Invoice = Tabel_Alat.No_Invoice";
+                    + "JOIN Tabel_Alat ON Tabel_Utama.No_Invoice = Tabel_Alat.No_Invoice "
+                    + "ORDER BY Tabel_Utama.Tanggal_Sewa DESC";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query); ResultSet resultSet = preparedStatement.executeQuery()) {
 

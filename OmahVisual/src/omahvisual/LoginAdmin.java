@@ -29,8 +29,10 @@ public class LoginAdmin extends javax.swing.JFrame {
         wrong = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setAlwaysOnTop(true);
+        setBackground(new java.awt.Color(0, 102, 204));
 
-        jLabel1.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Poppins", 0, 24)); // NOI18N
         jLabel1.setText("Login Pegawai");
         jLabel1.setToolTipText("");
 
@@ -51,6 +53,7 @@ public class LoginAdmin extends javax.swing.JFrame {
         password_field.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         password_field.setText("jPasswordField1");
 
+        loginButton.setBackground(new java.awt.Color(0, 51, 102));
         loginButton.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         loginButton.setText("Login");
         loginButton.addActionListener(new java.awt.event.ActionListener() {
@@ -70,37 +73,47 @@ public class LoginAdmin extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(71, 71, 71)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(4, 4, 4)))
                 .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(password_field)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(password_field, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
                     .addComponent(username_field))
-                .addContainerGap(127, Short.MAX_VALUE))
+                .addGap(91, 91, 91))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(wrong)
-                .addGap(100, 100, 100))
+                .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(218, 218, 218))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(139, 139, 139)
+                        .addComponent(wrong))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(165, 165, 165)
+                        .addComponent(jLabel1)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(username_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(username_field))
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(password_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(password_field))
+                .addGap(24, 24, 24)
                 .addComponent(loginButton)
                 .addGap(18, 18, 18)
                 .addComponent(wrong)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addGap(33, 33, 33))
         );
 
         pack();
@@ -115,12 +128,12 @@ public class LoginAdmin extends javax.swing.JFrame {
         String password = new String(password_field.getPassword());
 
         // Database connection parameters
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=Transaksi_Omah_Visual;user=Project-OmahVisual;password=OmahVisual2023;integratedSecurity=true;" + "encrypt=true;trustServerCertificate=true";
-        String user = "Project-OmahVisual";
-        String dbPassword = "OmahVisual2023";
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=Transaksi_Omah_Visual2;user=sa;password=admin123;integratedSecurity=true;" + "encrypt=true;trustServerCertificate=true";
+        String user = "sa";
+        String dbPassword = "admin123";
 
         try (Connection connection = DriverManager.getConnection(url, user, dbPassword)) {
-            String query = "SELECT * FROM employee WHERE username = ? AND password = ?";
+            String query = "SELECT * FROM employee WHERE Username = ? AND Password = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, username);
                 preparedStatement.setString(2, password);
